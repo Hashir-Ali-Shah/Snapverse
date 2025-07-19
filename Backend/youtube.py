@@ -12,5 +12,5 @@ class YoutubeDownloader:
             loader.download([url])
 
 testing= YoutubeDownloader()
-testing.download_video("https://youtu.be/668nUCeBHyY?si=hVY9SBc2Ps0rvDY0", "downloads/%(title)s.%(ext)s")
+testing.download_video("https://youtu.be/668nUCeBHyY?si=hVY9SBc2Ps0rvDY0", "C:/Users/PMLS/Downloads/%(title)s.%(ext)s")
         
