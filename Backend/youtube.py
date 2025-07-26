@@ -4,13 +4,13 @@ class YoutubeDownloader:
     def __init__(self):
         pass
 
-    def download_video(self, url: str, resolution: str = '360', output_path: str = "downloads/%(title)s.%(ext)s"):
+    def download_by_resolution(self, url: str, resolution: str = '720', output_path: str = "downloads/%(title)s.%(ext)s"):
         options = {
-            'format': f'bestvideo[height<={resolution}]+bestaudio/best/best',
+            'format': f'bestvideo[height<={resolution}]+bestaudio/best',
             'outtmpl': output_path,
             'merge_output_format': 'mp4',
         }
-
+        
         with YoutubeDL(options) as loader:
             loader.download([url])
 
@@ -31,14 +31,7 @@ class YoutubeDownloader:
         with YoutubeDL({'quiet': True}) as loader:
             return loader.extract_info(url, download=False)
     
-    def download_by_resolution(self, url: str, resolution: str = '720', output_path: str = "downloads/%(title)s.%(ext)s"):
-        options = {
-            'format': f'bestvideo[height<={resolution}]+bestaudio/best',
-            'outtmpl': output_path,
-            'merge_output_format': 'mp4',
-        }
-        with YoutubeDL(options) as loader:
-            loader.download([url])
+
 
     def download_playlist(self, playlist_url: str, output_path: str = "downloads/%(playlist_title)s/%(title)s.%(ext)s"):
 
