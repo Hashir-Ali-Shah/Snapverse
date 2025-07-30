@@ -52,8 +52,8 @@ class YoutubeDownloader:
             'noplaylist': False,  
             'merge_output_format': 'mp4',
         }
-
         with YoutubeDL(options) as loader:
+            
             loader.download([playlist_url])
 
 
