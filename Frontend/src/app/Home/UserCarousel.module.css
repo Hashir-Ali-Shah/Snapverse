@@ -1,0 +1,47 @@
+.carouselSection {
+  background-color: #0f0f0f;
+  padding: 4rem 1rem;
+  color: white;
+}
+
+.heading {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.carouselWrapper {
+  overflow: hidden;
+}
+
+.carouselRow {
+  display: flex;
+  gap: 1rem;
+  animation: scroll-left 30s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+.videoPlaceholder {
+  width: 200px;
+  height: 120px;
+  background-color: #1a1a1a;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+/* Reverse direction for second row */
+.carouselRow:nth-child(2) {
+  animation-direction: reverse;
+}
+
+/* Scrolling animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

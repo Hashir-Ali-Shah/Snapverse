@@ -1,0 +1,29 @@
+/* Navbar.module.css */
+
+.navLink {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(90deg, #a855f7, #9333ea);
+  transform-origin: bottom right;
+  transition: transform 0.4s ease-out;
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.navLink:hover {
+  color: #c084fc; /* Equivalent to Tailwind's purple-400 */
+}
