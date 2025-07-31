@@ -3,16 +3,14 @@ interface ButtonProps {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
-  email?: string; // Optional, if you want to pass email for validation
-  password?: string; // Optional, if you want to pass password for validation
 }
 
-export default function Button({ label, onClick, type = "button",disabled,email,password }: ButtonProps) {
+export default function Button({ label, onClick, type = "button",disabled }: ButtonProps) {
   return (
     <button
       type={type}
       onClick={onClick}
-      disabled={disabled || !(email && password)} // Disable if email or password is not provided
+      disabled={disabled} // Disable if email or password is not provided
   className={`w-full relative overflow-hidden group bg-blue-600 text-white py-2.5 rounded-md transition duration-300 shadow-md 
     hover:bg-blue-700 
     before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent 

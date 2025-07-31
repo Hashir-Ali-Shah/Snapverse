@@ -6,10 +6,6 @@ import SocialLogin from "@/components/SocialAuth";
 import { useState } from "react";
 
 
-
-
-
-
 export default function LoginPage() {
 
   const [email, setEmail] = useState('');
@@ -71,19 +67,20 @@ function handlePasswordError(e: React.ChangeEvent<HTMLInputElement>) {
       <div className="absolute inset-0 bg-black/60 z-0" />
 
       {/* Login Card */}
-      <div className="relative z-10 max-w-md w-full p-8 rounded-2xl shadow-2xl bg-white/3 backdrop-blur-md">
-        <h2 className="text-3xl font-bold text-white text-center mb-6">Login</h2>
+<div className="relative z-10 max-w-md w-full p-8 rounded-2xl shadow-2xl bg-white/5 backdrop-blur-md overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/15 before:to-transparent before:opacity-30">
+  <h2 className="text-3xl font-bold text-white text-center mb-6 relative z-10">Login</h2>
 
-        <form className="space-y-4">
-          <Input value={email} onChange={handleEmailChange}  onBlur={handleEmailError} error={emailError} placeholder="Email" />
-          <Input value={password} onChange={handlePasswordChange} onBlur={handlePasswordError} error={passwordError} type="password" placeholder="Password" />
-          <Button label="Login" type="submit" disabled={Boolean(emailError || passwordError)} email={email} password={password}/>
-        </form>
+  <form className="space-y-4 relative z-10">
+    <Input value={email} onChange={handleEmailChange} onBlur={handleEmailError} error={emailError} placeholder="Email" />
+    <Input value={password} onChange={handlePasswordChange} onBlur={handlePasswordError} error={passwordError} type="password" placeholder="Password" />
+    <Button label="Login" type="submit" disabled={Boolean(emailError || passwordError || !(email || password))}  />
+  </form>
 
-        <div className="mt-6">
-          <SocialLogin />
-        </div>
-      </div>
+  <div className="mt-6 relative z-10">
+    <SocialLogin />
+  </div>
+</div>
+
     </div>
   );
 }
