@@ -23,13 +23,15 @@
 }
 
 .videoPlaceholder {
-  width: 200px;
-  height: 120px;
+  min-width: 320px;
+  aspect-ratio: 16 / 9;
+  min-height: 250px;
   background-color: #1a1a1a;
   border-radius: 0.75rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
 }
+
 
 /* Reverse direction for second row */
 .carouselRow:nth-child(2) {

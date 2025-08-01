@@ -1,0 +1,23 @@
+/* src/app/generator/ToolOverlay.module.css */
+
+.overlayContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 26rem;
+  height: 100%;
+  background-color: #1f2937; /* Tailwind: bg-gray-800 */
+  color: white;
+  z-index: 50;
+  border-left: 1px solid #374151; /* Tailwind: border-gray-700 */
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+.hiddenOverlay {
+  transform: translateX(100%);
+}
+
+.visibleOverlay {
+  transform: translateX(0);
+}
