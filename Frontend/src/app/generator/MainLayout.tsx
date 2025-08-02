@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Sidebar from './Sidebar';
-import Canvas from './Canvas';
+
 import ToolOverlay from './ToolOverlay';
 
 export default function MainLayout() {
@@ -15,7 +15,6 @@ export default function MainLayout() {
   return (
     <div className="relative flex h-screen overflow-hidden">
       <Sidebar onSelectPanel={handlePanelSelect} activePanel={activePanel} />
-      <Canvas />
       <ToolOverlay activePanel={activePanel} />
     </div>
   );
