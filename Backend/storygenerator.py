@@ -19,12 +19,11 @@ class StoryGenerator:
         self.chat_prompt = self._build_prompt()
 
     def _build_prompt(self):
-        # System behavior
+
         system_prompt = SystemMessagePromptTemplate.from_template(
             "You are an expert AI assistant who explains AI/ML topics in simple terms for beginners."
         )
 
-        # Few-shot examples
         examples = [
             {
                 "input": "What is a neural network?",
