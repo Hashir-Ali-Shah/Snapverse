@@ -57,9 +57,8 @@ class YoutubeDownloader:
             loader.download([playlist_url])
 
 
-path=r"D:\ML\Flagship\testing"
+path=r"D:\ML\Flagship\Code\Frontend\public"
 
-
-
-
+downlaod=YoutubeDownloader()
+downlaod.download_by_resolution("https://www.youtube.com/watch?v=9bZkp7q19f0", resolution="720", filename="Gangnam_Style", output_path=path)
         
