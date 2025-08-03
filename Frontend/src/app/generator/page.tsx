@@ -4,5 +4,5 @@ import MainLayout from './MainLayout';
 import Navbar from '@/components/Navbar';
 
 export default function GeneratorPage() {
-  return <><Navbar/><MainLayout /></>;
+  return <div className=""><Navbar/><MainLayout /></div>;
 }

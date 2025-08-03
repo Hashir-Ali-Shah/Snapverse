@@ -8,27 +8,27 @@ import EditingPanel from './panels/EditingPanel/editing';
 
 export default function ToolOverlay({ activePanel }: { activePanel: string | null }) {
   return (
-<div className="relative top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10">
-  <div className={activePanel === null ? '' : 'hidden'}>
-    <EditingPanel />
-  </div>
+    <div className="relative top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10 ">
+      <div className={`${activePanel === null ? '' : 'hidden'} w-full h-full`}>
+        <EditingPanel />
+      </div>
 
-  <div className={activePanel === 'story' ? '' : 'hidden'}>
-    <StoryPanel />
-  </div>
-
-  <div className={activePanel === 'voices' ? '' : 'hidden'}>
-    <VoicesPanel />
-  </div>
-
-  <div className={activePanel === 'characters' ? '' : 'hidden'}>
-    <CharactersPanel />
-  </div>
-
-  <div className={activePanel === 'video' ? '' : 'hidden'}>
-    <VideoPanel />
-  </div>
+<div className={`${activePanel === 'story' ? '' : 'hidden'} w-full h-[80%] `}>
+  <StoryPanel />
 </div>
 
+
+      <div className={`${activePanel === 'voices' ? '' : 'hidden'} w-full h-full`}>
+        <VoicesPanel />
+      </div>
+
+      <div className={`${activePanel === 'characters' ? '' : 'hidden'} w-full h-full`}>
+        <CharactersPanel />
+      </div>
+
+      <div className={`${activePanel === 'video' ? '' : 'hidden'} w-full h-full`}>
+        <VideoPanel />
+      </div>
+    </div>
   );
 }

@@ -11,7 +11,7 @@ type SidebarProps = {
 
 export default function Sidebar({ onSelectPanel, activePanel }: SidebarProps) {
   return (
-    <div className="h-full w-36 bg-gray-900 text-white flex flex-col items-center py-6 gap-4">
+    <div className="h-screen w-36 bg-gray-900 text-white flex flex-col items-center py-6 gap-4">
       {options.map(option => (
         <button
           key={option}
