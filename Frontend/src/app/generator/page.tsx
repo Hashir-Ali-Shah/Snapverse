@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import MainLayout from './MainLayout';
-import Navbar from '@/components/Navbar';
+import MainLayout from "./MainLayout";
+import Navbar from "@/components/Navbar";
 
 export default function GeneratorPage() {
-  return <div className=""><Navbar/><MainLayout /></div>;
+  return (
+    <div className="h-screen max-h-screen overflow-hidden">
+      <Navbar />
+      <MainLayout />
+    </div>
+  );
 }

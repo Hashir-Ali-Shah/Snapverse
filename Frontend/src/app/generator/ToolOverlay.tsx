@@ -18,7 +18,7 @@ export default function ToolOverlay({
       </div>
 
       <div
-        className={`${activePanel === "story" ? "" : "hidden"} w-full h-[85%] `}
+        className={`${activePanel === "story" ? "" : "hidden"} w-full h-[87%] `}
       >
         <StoryPanel />
       </div>
@@ -32,7 +32,7 @@ export default function ToolOverlay({
       <div
         className={`${
           activePanel === "characters" ? "" : "hidden"
-        } w-full h-full`}
+        } w-full h-full `}
       >
         <CharactersPanel />
       </div>
