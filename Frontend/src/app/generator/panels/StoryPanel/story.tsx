@@ -93,16 +93,21 @@ export default function StoryPanel() {
 
       {/* Input area (always visible) */}
       <div className="shrink-0 p-3 border-t border-[#333] bg-[#121212] flex items-center space-x-2">
-        <input
-          type="text"
+        <textarea
           placeholder="Type your prompt..."
-          className="flex-1 px-3 py-2 bg-[#1e1e1e] text-white border border-[#444] rounded-md"
+          className="flex-1 px-3 py-2 bg-[#1e1e1e] text-white border border-[#444] rounded-md resize-none overflow-y-auto leading-tight"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") handleConfirm();
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault(); // prevents newline
+              handleConfirm();
+            }
           }}
+          rows={1}
+          style={{ maxHeight: "7.5rem" }} // 5 rows x 1.5rem line-height
         />
+
         <button
           onClick={handleConfirm}
           className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
