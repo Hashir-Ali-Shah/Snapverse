@@ -1,15 +1,15 @@
-from chatterbox_tts import TTS
+import torchaudio as ta
+from chatterbox.tts import ChatterboxTTS
 
-# Load pre-trained model
-tts = TTS.from_pretrained("chatterbox")
+class ChatterboxVoiceCloner:
+    def __init__(self, device: str = "cpu"):
+        self.tts = ChatterboxTTS.from_pretrained(device=device)
 
-# Run zero-shot voice cloning
-audio = tts.clone_and_speak(
-    ref_audio="my_voice.wav",
-    text="Hey, this is a cloned voice speaking from the ChatterBox model!",
-    emotion="excited",  # other options: "neutral", "sad", "angry", "happy"
-)
-
-# Save output to a WAV file
-with open("output.wav", "wb") as f:
-    f.write(audio)
+    def clone_and_generate(
+        self,
+        text: str,
+        audio_prompt_path: str,
+        output_path: str,
+    ) -> None:
+        wav = self.tts.generate(text, audio_prompt_path=audio_prompt_path)
+        ta.save(output_path, wav, self.tts.sr)
