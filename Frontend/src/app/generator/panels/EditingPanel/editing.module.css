@@ -1,0 +1,85 @@
+.container {
+  background-color: white;
+  width: 100%;
+  max-width: 900px;
+  max-height: 430px;
+  min-height: 430px;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.conversationScroll::-webkit-scrollbar{
+    display: none; /* Chrome/Safari */
+}
+.conversationScroll {
+  max-height: 400px;
+  min-height: 270px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 8px;
+}
+
+.messageRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.left {
+  flex-direction: row;
+}
+
+.right {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  border-radius: 9999px;
+}
+
+.messageBubble {
+  background-color: #f0f0f0;
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 70%;
+  color: black;
+  font-size: 14px;
+}
+
+.buttonsSection {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #4338ca;
+}
+
+.generateButton {
+  width: 52%;
+  margin:auto
+}
