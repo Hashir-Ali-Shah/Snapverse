@@ -60,5 +60,5 @@ class YoutubeDownloader:
 path=r"D:\ML\Flagship\Code\Frontend\public"
 
 downlaod=YoutubeDownloader()
-downlaod.download_by_resolution("https://www.youtube.com/watch?v=9bZkp7q19f0", resolution="720", filename="Gangnam_Style", output_path=path)
+downlaod.download_by_resolution("https://youtu.be/YoOG5H4603Y?si=pJEltbDgTFqT8vSc", resolution="720", filename="testing", output_path=path)
         
