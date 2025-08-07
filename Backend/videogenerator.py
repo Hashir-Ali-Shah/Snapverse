@@ -35,10 +35,6 @@ class VideoProcessor:
         audio_clips = []
         for _, start_time, duration, audio_path in self.subtitles:
             audio = AudioFileClip(audio_path).with_start(start_time).with_volume_scaled(5)
-            print("Duration:", audio.duration)
-            print("FPS:", audio.fps)
-            print("Channels:", audio.nchannels)
-            print(audio.max_volume())
             audio_clips.append(audio)
         return CompositeAudioClip(audio_clips).with_duration(total_duration)
 
