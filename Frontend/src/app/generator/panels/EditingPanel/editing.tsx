@@ -113,7 +113,7 @@ export default function EditingPanel() {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center text-white px-4 py-6 bg-[#1e1e1e]">
+    <div className="min-h-screen w-full flex flex-col items-center text-white px-4 py-6 bg-black">
       <div className={styles.container}>
         {/* Scrollable conversation area */}
         <div className={styles.conversationScroll}>
