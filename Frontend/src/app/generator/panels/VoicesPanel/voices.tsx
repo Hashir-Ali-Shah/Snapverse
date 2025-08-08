@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import styles from "./voices.module.css";
 
 export default function VoicesPanel({
@@ -7,7 +7,13 @@ export default function VoicesPanel({
 }: {
   onSelectPanel: (panel: string) => void;
 }) {
-  const characters = Array.from({ length: 20 });
+  const [voices, setVoices] = useState([
+    "/logo.png",
+    "/logo.png",
+    "/logo.png",
+    "/logo.png",
+    "/logo.png",
+  ]);
 
   const voicesHandler = () => {
     onSelectPanel("voices");
@@ -16,15 +22,15 @@ export default function VoicesPanel({
   return (
     <div className={`p-3 text-white h-[480px] flex flex-col overflow-hidden `}>
       <div className={`flex-1 overflow-y-auto ${styles.scrollContainer}`}>
-        <div className={`grid grid-cols-4 gap-4 pr-2 `}>
-          {characters.map((_, idx) => (
+        <div className={`grid grid-cols-4 gap-4  `}>
+          {voices.map((value, idx) => (
             <div
               onClick={voicesHandler}
               key={idx}
-              className={`p-2 rounded ${styles.card}`}
+              className={` rounded ${styles.card}`}
             >
               <img
-                src="/logo.png"
+                src={value}
                 alt={`Character ${idx + 1}`}
                 className="w-full h-auto rounded"
               />
