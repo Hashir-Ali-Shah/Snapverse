@@ -18,6 +18,7 @@ export default function EditingPanel({
   conversation: { id: number; speaker: string; text: string }[];
 }) {
   const [showVideo, setShowVideo] = useState(false);
+  const [loading, setLoading] = useState(false); // <-- loading state
 
   const isReady =
     imageA.trim() !== "" &&
@@ -44,7 +45,17 @@ export default function EditingPanel({
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center text-white px-4 py-6 bg-black">
+    <div className="relative min-h-screen w-full flex flex-col items-center text-white px-4 py-6 bg-black">
+      {/* LOADING OVERLAY */}
+      {loading && (
+        <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-[#1e1e1e] px-6 py-4 rounded-lg flex flex-col items-center animate-pulse">
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-3"></div>
+            <p className="text-gray-300">Processing video...</p>
+          </div>
+        </div>
+      )}
+
       <div className={styles.container}>
         {/* Scrollable conversation area */}
         <div className={styles.conversationScroll}>
@@ -110,11 +121,16 @@ export default function EditingPanel({
             </button>
           </div>
           <button
-            onClick={() => setShowVideo(true)}
+            onClick={() => {
+              setLoading(true);
+              // your processing logic here
+              // after processing:
+              // setLoading(false);
+            }}
             className={`${styles.button} ${styles.generateButton}`}
-            disabled={!isReady}
+            disabled={!isReady || loading}
           >
-            Generate Video
+            {loading ? "Generating..." : "Generate Video"}
           </button>
         </div>
       </div>

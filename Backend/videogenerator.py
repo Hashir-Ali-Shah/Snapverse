@@ -22,7 +22,10 @@ class VideoProcessor:
                     font=self.font_path,
                     font_size=40,
                     color='white',
-                    bg_color="black"
+                    bg_color=None,
+                    size=(810, None),
+                    method='caption',
+
                 )
                 .with_position(('center', 'center'))
                 .with_start(start_time)
@@ -80,7 +83,7 @@ logo_left_path = os.path.join(PUBLIC_DIR, "logo.png")
 logo_right_path = os.path.join(PUBLIC_DIR, "logo.png")
 
 subtitles = [
-    ("This is a subtitle example.", 1, 3, os.path.join(PUBLIC_DIR, "C:/Users/PMLS/Downloads/output.wav")),
+    ("This is a subtitle example.This is a subtitle example.This is a subtitle example.This is a subtitle example.This is a subtitle example.", 1, 3, os.path.join(PUBLIC_DIR, "C:/Users/PMLS/Downloads/output.wav")),
       ("This is a subtitle example.", 4, 3, os.path.join(PUBLIC_DIR, "C:/Users/PMLS/Downloads/output.wav"))
    
 ]
