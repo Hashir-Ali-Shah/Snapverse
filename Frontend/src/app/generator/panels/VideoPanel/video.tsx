@@ -9,7 +9,18 @@ export default function VideoPanel({
   onSelectPanel: (panel: string) => void;
 }) {
   const [videoURL, setVideoURL] = useState("");
-  const characters = Array.from({ length: 20 });
+  const [videos, setVideos] = useState([
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+    "/testing.mp4",
+  ]);
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setVideoURL(e.target.value);
   }
@@ -33,17 +44,20 @@ export default function VideoPanel({
             className="px-3 py-2 rounded-md border border-slate-700 bg-slate-800 text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        <div className={`grid grid-cols-4 gap-4 pr-2 `}>
-          {characters.map((_, idx) => (
+        <div className="grid grid-cols-4 gap-0">
+          {videos.map((videoSrc, idx) => (
             <div
               onClick={videoHandler}
               key={idx}
-              className={`p-2 rounded ${styles.card}`}
+              className={`${styles.card} h-56`} // no padding here
             >
-              <img
-                src="/logo.png"
-                alt={`Character ${idx + 1}`}
-                className="w-full h-auto rounded"
+              <video
+                src={videoSrc}
+                className="w-full h-full rounded-none object-cover" // no rounding, full coverage
+                autoPlay
+                loop
+                muted
+                playsInline
               />
             </div>
           ))}
