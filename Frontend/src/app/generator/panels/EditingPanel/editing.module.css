@@ -46,7 +46,7 @@
   background-color: #f0f0f0;
   padding: 10px 14px;
   border-radius: 16px;
-  max-width: 70%;
+  max-width: 80%;
   color: black;
   font-size: 14px;
 }
@@ -61,7 +61,7 @@
 .buttonRow {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .button {
@@ -80,6 +80,6 @@
 }
 
 .generateButton {
-  width: 52%;
+  width: 64%;
   margin:auto
 }

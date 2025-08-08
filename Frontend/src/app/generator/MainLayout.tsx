@@ -15,7 +15,10 @@ export default function MainLayout() {
   return (
     <div className="relative flex h-screen fixed inset-0  overflow-hidden">
       <Sidebar onSelectPanel={handlePanelSelect} activePanel={activePanel} />
-      <ToolOverlay activePanel={activePanel} />
+      <ToolOverlay
+        onSelectPanel={handlePanelSelect}
+        activePanel={activePanel}
+      />
     </div>
   );
 }

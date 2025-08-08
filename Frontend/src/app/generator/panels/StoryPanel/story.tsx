@@ -6,13 +6,18 @@ import {
   PaperAirplaneIcon,
   DocumentDuplicateIcon,
 } from "@heroicons/react/24/solid";
+import { SiPoetry } from "react-icons/si";
 
 interface ChatMessage {
   role: "user" | "ai";
   content: string;
 }
 
-export default function StoryPanel() {
+export default function StoryPanel({
+  onSelectPanel,
+}: {
+  onSelectPanel: (panel: string) => void;
+}) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "ai", content: "Hello! How can I help you today?" },
   ]);
@@ -23,6 +28,11 @@ export default function StoryPanel() {
     navigator.clipboard.writeText(messages[messages.length - 1].content);
     setCopy(true);
     setTimeout(() => setCopy(false), 2000); // Reset after 2 seconds
+  };
+  const storyHandler = () => {
+    onSelectPanel("story");
+    setInput(""); // Clear input when switching to story panel
+    setMessages([]); // Optionally clear messages if needed
   };
 
   const handleConfirm = () => {
@@ -107,6 +117,14 @@ export default function StoryPanel() {
           rows={1}
           style={{ maxHeight: "7.5rem" }} // 5 rows x 1.5rem line-height
         />
+
+        {/* New Use Story Button */}
+        <button
+          onClick={storyHandler}
+          className="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 whitespace-nowrap"
+        >
+          Use Story
+        </button>
 
         <button
           onClick={handleConfirm}

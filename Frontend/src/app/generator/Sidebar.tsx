@@ -16,8 +16,10 @@ export default function Sidebar({ onSelectPanel, activePanel }: SidebarProps) {
         <button
           key={option}
           onClick={() => onSelectPanel(option)}
-          className={`w-full px-4 py-3 rounded-md text-base font-semibold text-center hover:bg-gray-700 ${
-            activePanel === option ? "bg-blue-600" : ""
+          className={`w-full px-4 py-3 rounded-md text-base font-semibold text-center  ${
+            activePanel === option
+              ? "bg-blue-600 hover:bg-blue-600"
+              : "hover:bg-gray-700"
           }`}
         >
           {option.charAt(0).toUpperCase() + option.slice(1)}

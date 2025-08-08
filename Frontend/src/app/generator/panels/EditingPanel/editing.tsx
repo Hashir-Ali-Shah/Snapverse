@@ -4,101 +4,33 @@ import { useState } from "react";
 import Image from "next/image";
 import styles from "./editing.module.css";
 
-const dummyConversation = [
-  {
-    id: 1,
-    speaker: "A",
-    text: "Hey, how are you doing?",
-    image: "/logo.png",
-  },
-  {
-    id: 2,
-    speaker: "B",
-    text: "I'm good, thanks! What about you?",
-    image: "/login.jpg",
-  },
-  {
-    id: 3,
-    speaker: "A",
-    text: "All good here, excited for the project!",
-    image: "/logo.png",
-  },
-  {
-    id: 4,
-    speaker: "B",
-    text: "Let’s make it go viral!",
-    image: "/login.jpg",
-  },
-  {
-    id: 3,
-    speaker: "A",
-    text: "All good here, excited for the project!",
-    image: "/logo.png",
-  },
-  {
-    id: 4,
-    speaker: "B",
-    text: "Let’s make it go viral!",
-    image: "/login.jpg",
-  },
-  {
-    id: 3,
-    speaker: "A",
-    text: "All good here, excited for the project!",
-    image: "/logo.png",
-  },
-  {
-    id: 4,
-    speaker: "B",
-    text: "Let’s make it go viral!",
-    image: "/login.jpg",
-  },
-  {
-    id: 3,
-    speaker: "A",
-    text: "All good here, excited for the project!",
-    image: "/logo.png",
-  },
-  {
-    id: 4,
-    speaker: "B",
-    text: "Let’s make it go viral!",
-    image: "/login.jpg",
-  },
-  {
-    id: 3,
-    speaker: "A",
-    text: "All good here, excited for the project!",
-    image: "/logo.png",
-  },
-  {
-    id: 4,
-    speaker: "B",
-    text: "Let’s make it go viral!",
-    image: "/login.jpg",
-  },
-  {
-    id: 3,
-    speaker: "A",
-    text: "All good here, excited for the project!",
-    image: "/logo.png",
-  },
-  {
-    id: 4,
-    speaker: "B",
-    text: "Let’s make it go viral!",
-    image: "/login.jpg",
-  },
-];
-
-export default function EditingPanel() {
+export default function EditingPanel({
+  onSelectPanel,
+}: {
+  onSelectPanel: (panel: string) => void;
+}) {
   const [showVideo, setShowVideo] = useState(false);
+  const [imageA, setImageA] = useState("/logo.png");
+  const [imageB, setImageB] = useState("/login.jpg");
+  const [video, setVideo] = useState("/testing.mp4");
+  const [dummyConversation, setDummyConversation] = useState([
+    { id: 1, speaker: "A", text: "Hey, how are you doing?" },
+    { id: 2, speaker: "B", text: "I'm good, thanks! What about you?" },
+    { id: 3, speaker: "A", text: "All good here, excited for the project!" },
+    { id: 4, speaker: "B", text: "Let’s make it go viral!" },
+  ]);
+
+  const isReady =
+    imageA.trim() !== "" &&
+    imageB.trim() !== "" &&
+    video.trim() !== "" &&
+    dummyConversation.length > 0;
 
   if (showVideo) {
     return (
       <div className="w-full flex flex-col items-center text-white px-4 py-4 pb-20 overflow-y-auto">
         <video
-          src="/testing.mp4"
+          src={video}
           className="w-full max-w-2xl max-h-[400px] rounded-lg"
           controls
         />
@@ -117,35 +49,71 @@ export default function EditingPanel() {
       <div className={styles.container}>
         {/* Scrollable conversation area */}
         <div className={styles.conversationScroll}>
-          {dummyConversation.map((msg) => (
-            <div
-              key={msg.id}
-              className={`${styles.messageRow} ${
-                msg.speaker === "A" ? styles.left : styles.right
-              }`}
-            >
-              <Image
-                src={msg.image}
-                alt={`Speaker ${msg.speaker}`}
-                width={40}
-                height={40}
-                className={styles.avatar}
-              />
-              <div className={styles.messageBubble}>{msg.text}</div>
+          {!isReady ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400 text-center p-4">
+              <p className="mb-2 font-semibold">
+                Please select the following before preview:
+              </p>
+              <ul className="list-disc list-outside ">
+                {imageA.trim() === "" && <li>Character 1 Image</li>}
+                {imageB.trim() === "" && <li>Character 2 Image</li>}
+                {video.trim() === "" && <li>Video</li>}
+                {dummyConversation.length === 0 && <li>Conversation</li>}
+              </ul>
             </div>
-          ))}
+          ) : (
+            dummyConversation.map((msg) => (
+              <div
+                key={msg.id}
+                className={`${styles.messageRow} ${
+                  msg.speaker === "A" ? styles.left : styles.right
+                }`}
+              >
+                <Image
+                  src={msg.speaker === "A" ? imageA : imageB}
+                  alt={`Speaker ${msg.speaker}`}
+                  width={40}
+                  height={40}
+                  className={styles.avatar}
+                />
+                <div className={styles.messageBubble}>{msg.text}</div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Buttons below conversation */}
         <div className={styles.buttonsSection}>
           <div className={styles.buttonRow}>
-            <button className={styles.button}>Edit Character 1</button>
-            <button className={styles.button}>Edit Character 2</button>
-            <button className={styles.button}>Edit Story</button>
+            <button
+              className={styles.button}
+              onClick={() => onSelectPanel("video")}
+            >
+              Edit Video
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => onSelectPanel("story")}
+            >
+              Edit Story
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => onSelectPanel("characters")}
+            >
+              Edit Character 1
+            </button>
+            <button
+              className={styles.button}
+              onClick={() => onSelectPanel("characters")}
+            >
+              Edit Character 2
+            </button>
           </div>
           <button
             onClick={() => setShowVideo(true)}
             className={`${styles.button} ${styles.generateButton}`}
+            disabled={!isReady}
           >
             Generate Video
           </button>

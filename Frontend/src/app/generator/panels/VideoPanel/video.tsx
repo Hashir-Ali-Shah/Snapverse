@@ -3,13 +3,20 @@
 import { useState } from "react";
 import styles from "./video.module.css";
 
-export default function VideoPanel() {
+export default function VideoPanel({
+  onSelectPanel,
+}: {
+  onSelectPanel: (panel: string) => void;
+}) {
   const [videoURL, setVideoURL] = useState("");
   const characters = Array.from({ length: 20 });
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setVideoURL(e.target.value);
   }
 
+  const videoHandler = () => {
+    onSelectPanel("video");
+  };
   return (
     <div className={`p-3 text-white h-[480px] flex flex-col overflow-hidden `}>
       <div className={`flex-1 overflow-y-auto ${styles.scrollContainer}`}>
@@ -28,7 +35,11 @@ export default function VideoPanel() {
         </div>
         <div className={`grid grid-cols-4 gap-4 pr-2 `}>
           {characters.map((_, idx) => (
-            <div key={idx} className={`p-2 rounded ${styles.card}`}>
+            <div
+              onClick={videoHandler}
+              key={idx}
+              className={`p-2 rounded ${styles.card}`}
+            >
               <img
                 src="/logo.png"
                 alt={`Character ${idx + 1}`}
