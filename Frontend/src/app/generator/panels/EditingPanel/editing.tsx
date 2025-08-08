@@ -6,25 +6,24 @@ import styles from "./editing.module.css";
 
 export default function EditingPanel({
   onSelectPanel,
+  imageA,
+  imageB,
+  video,
+  conversation,
 }: {
   onSelectPanel: (panel: string) => void;
+  imageA: string;
+  imageB: string;
+  video: string;
+  conversation: { id: number; speaker: string; text: string }[];
 }) {
   const [showVideo, setShowVideo] = useState(false);
-  const [imageA, setImageA] = useState("/logo.png");
-  const [imageB, setImageB] = useState("/login.jpg");
-  const [video, setVideo] = useState("/testing.mp4");
-  const [dummyConversation, setDummyConversation] = useState([
-    { id: 1, speaker: "A", text: "Hey, how are you doing?" },
-    { id: 2, speaker: "B", text: "I'm good, thanks! What about you?" },
-    { id: 3, speaker: "A", text: "All good here, excited for the project!" },
-    { id: 4, speaker: "B", text: "Let’s make it go viral!" },
-  ]);
 
   const isReady =
     imageA.trim() !== "" &&
     imageB.trim() !== "" &&
     video.trim() !== "" &&
-    dummyConversation.length > 0;
+    conversation.length > 0;
 
   if (showVideo) {
     return (
@@ -58,11 +57,11 @@ export default function EditingPanel({
                 {imageA.trim() === "" && <li>Character 1 Image</li>}
                 {imageB.trim() === "" && <li>Character 2 Image</li>}
                 {video.trim() === "" && <li>Video</li>}
-                {dummyConversation.length === 0 && <li>Conversation</li>}
+                {conversation.length === 0 && <li>Conversation</li>}
               </ul>
             </div>
           ) : (
-            dummyConversation.map((msg) => (
+            conversation.map((msg) => (
               <div
                 key={msg.id}
                 className={`${styles.messageRow} ${

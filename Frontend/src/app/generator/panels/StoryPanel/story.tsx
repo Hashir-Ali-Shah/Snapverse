@@ -15,8 +15,10 @@ interface ChatMessage {
 
 export default function StoryPanel({
   onSelectPanel,
+  setConversation,
 }: {
   onSelectPanel: (panel: string) => void;
+  setConversation: (value: []) => void;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "ai", content: "Hello! How can I help you today?" },

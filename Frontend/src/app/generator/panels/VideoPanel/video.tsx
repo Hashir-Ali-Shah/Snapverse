@@ -5,8 +5,12 @@ import styles from "./video.module.css";
 
 export default function VideoPanel({
   onSelectPanel,
+  setVideo,
+  video,
 }: {
   onSelectPanel: (panel: string) => void;
+  setVideo: (value: string) => void;
+  video: string;
 }) {
   const [videoURL, setVideoURL] = useState("");
   const [videos, setVideos] = useState([
@@ -25,8 +29,13 @@ export default function VideoPanel({
     setVideoURL(e.target.value);
   }
 
-  const videoHandler = () => {
-    onSelectPanel("video");
+  const videoHandler = (videoSrc: string) => {
+    if (video == "") {
+      setVideo(videoSrc);
+      onSelectPanel("video");
+    } else if (video === videoSrc) {
+      setVideo(""); // Deselect if already selected
+    }
   };
   return (
     <div className={`p-3 text-white h-[480px] flex flex-col overflow-hidden `}>
@@ -47,13 +56,15 @@ export default function VideoPanel({
         <div className="grid grid-cols-4 gap-4">
           {videos.map((videoSrc, idx) => (
             <div
-              onClick={videoHandler}
+              onClick={() => videoHandler(videoSrc)}
               key={idx}
               className={`${styles.card} h-56`} // no padding here
             >
               <video
                 src={videoSrc}
-                className="w-full h-full rounded-none object-cover" // no rounding, full coverage
+                className={`w-full h-full rounded-none object-cover ${
+                  videoSrc == video ? "ring-4 ring-yellow-400" : ""
+                }`}
                 autoPlay
                 loop
                 muted
