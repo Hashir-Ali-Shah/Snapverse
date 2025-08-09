@@ -17,9 +17,9 @@ export default function EditingPanel({
   video: string;
   conversation: { id: number; speaker: string; text: string }[];
 }) {
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
   const [loading, setLoading] = useState(false); // <-- loading state
-  const [videopath, setVideo] = useState("");
+  const [videopath, setVideo] = useState("/output_video.mp4");
 
   const isReady =
     imageA.trim() !== "" &&

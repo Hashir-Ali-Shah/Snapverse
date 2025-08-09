@@ -13,3 +13,5 @@ class ChatterboxVoiceCloner:
     ) -> None:
         wav = self.tts.generate(text, audio_prompt_path=audio_prompt_path)
         ta.save(output_path, wav, self.tts.sr)
+
+    

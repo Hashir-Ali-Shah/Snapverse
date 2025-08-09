@@ -15,7 +15,12 @@ export default function CharactersPanel({
   setChar1: (value: string) => void;
   setChar2: (value: string) => void;
 }) {
-  const [characters, setCharacters] = useState(["/characters/logo.png"]);
+  const [characters, setCharacters] = useState([
+    "/characters/trump.png",
+    "/characters/obama.png",
+    "/characters/modi.png",
+    "/characters/peter.png",
+  ]);
   const charactersHandler = (value: string) => {
     if (char1 === "") {
       setChar1(value);
@@ -48,7 +53,7 @@ export default function CharactersPanel({
               <img
                 src={value}
                 alt={`Character ${idx + 1}`}
-                className="w-full h-auto rounded"
+                className="w-full h-auto rounded object-contain cursor-pointer"
               />
             </div>
           ))}

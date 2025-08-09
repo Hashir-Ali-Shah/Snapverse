@@ -18,20 +18,22 @@
 .carouselRow {
   display: flex;
   gap: 1rem;
-  animation: scroll-left 30s linear infinite;
+  animation: scroll-left 40s linear infinite;
   margin-bottom: 1.5rem;
+  width: max-content;
 }
 
-.videoPlaceholder {
-  min-width: 320px;
-  aspect-ratio: 16 / 9;
-  min-height: 250px;
-  background-color: #1a1a1a;
+.video {
+  width: 320px;         /* increased size */
+  height: 350px;        /* 16:9 aspect ratio */
+  object-fit: cover;    /* fill the box nicely */
   border-radius: 0.75rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
+  background: black;
+  outline: none;
+  pointer-events: none; /* disable interaction so no accidental fullscreen */
 }
-
 
 /* Reverse direction for second row */
 .carouselRow:nth-child(2) {

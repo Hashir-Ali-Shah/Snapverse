@@ -28,6 +28,7 @@ class StoryGenerator:
             "use the fewshortprompts to understand how to answer any question  which starts below\n"
             "your output should start directly from coversation and end on conversation and should not contain any other text.\n"
             "if somebody asks a question other than conversation then you should answer with 'I am story generator expert and I can only generate conversation between 2 characters based on user input.'\n"
+           
         )
 
         examples = [
@@ -69,7 +70,7 @@ class StoryGenerator:
             examples=examples
         )
 
-        user_prompt = HumanMessagePromptTemplate.from_template("History ends . This is your main query {question}")
+        user_prompt = HumanMessagePromptTemplate.from_template("History ends . This is your main query {question} Make sure to give output directly and dont say something like here is your output or conversation")
         history_intro = SystemMessagePromptTemplate.from_template("Below is the chat history.")
 
 

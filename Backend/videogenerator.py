@@ -27,7 +27,7 @@ class VideoProcessor:
                     method='caption',
 
                 )
-                .with_position(('center', 'center'))
+                .with_position(('center', 'top'))
                 .with_start(start_time)
                 .with_duration(duration)
             )
@@ -37,7 +37,7 @@ class VideoProcessor:
     def create_audio_clips(self, total_duration):
         audio_clips = []
         for _, start_time, duration, audio_path in self.subtitles:
-            audio = AudioFileClip(audio_path).with_start(start_time).with_volume_scaled(5)
+            audio = AudioFileClip(audio_path).with_start(start_time).with_volume_scaled(3)
             audio_clips.append(audio)
         return CompositeAudioClip(audio_clips).with_duration(total_duration)
     
@@ -66,8 +66,8 @@ class VideoProcessor:
         logo_clip_left = (
             ImageClip(self.logo_left_path)
             .with_duration(video.duration)
-            .resized(height=200)
-            .with_position((100, 400))
+            .resized(height=300)
+            .with_position(( 200, 400))
         )
 
         img = Image.open(self.logo_right_path)
@@ -75,9 +75,9 @@ class VideoProcessor:
         logo_clip_right = (
             ImageClip(flipped_img)
             .with_duration(video.duration)
-            .resized(height=200)
+            .resized(height=300)
         )
-        x_right = video.w - logo_clip_right.w - 100
+        x_right = video.w - logo_clip_right.w - 200
         logo_clip_right = logo_clip_right.with_position((x_right, 400))
 
         text_clips = self.create_text_clips()
@@ -117,5 +117,7 @@ processor = VideoProcessor(
     logo_right_path=logo_right_path,
     subtitles=subtitles
 )
+
+
 
 
