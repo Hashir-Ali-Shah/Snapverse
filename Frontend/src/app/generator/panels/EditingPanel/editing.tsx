@@ -19,6 +19,7 @@ export default function EditingPanel({
 }) {
   const [showVideo, setShowVideo] = useState(false);
   const [loading, setLoading] = useState(false); // <-- loading state
+  const [videopath, setVideo] = useState("");
 
   const isReady =
     imageA.trim() !== "" &&
@@ -26,11 +27,73 @@ export default function EditingPanel({
     video.trim() !== "" &&
     conversation.length > 0;
 
+  const splitConversation = (
+    conversation: { id: number; speaker: string; text: string }[],
+    maxWords = 3
+  ) => {
+    const result: { id: number; speaker: string; text: string }[] = [];
+
+    conversation.forEach(({ speaker, text }, index) => {
+      // Split into chunks of words
+      const words = text.split(/\s+/);
+      for (let i = 0; i < words.length; i += maxWords) {
+        const chunk = words.slice(i, i + maxWords).join(" ");
+        result.push({
+          id: result.length + 1,
+          speaker,
+          text: chunk,
+        });
+      }
+    });
+
+    return result;
+  };
+
+  const getVoicePath = (imagePath: string): string => {
+    // Extract the base filename without extension
+    const fileName = imagePath.split("/").pop()?.split(".")[0];
+    if (!fileName) return "";
+
+    // Return the new path in voices folder
+    return `/voices/${fileName}.wav`;
+  };
+  const generateHandler = async () => {
+    if (!isReady || loading) return;
+    setLoading(true);
+
+    const voiceA = getVoicePath(imageA);
+    const voiceB = getVoicePath(imageB);
+    const splitConv = splitConversation(conversation, 7);
+
+    const payload = {
+      voiceA: voiceA, // e.g. "/public/voices/voiceA.wav"
+      voiceB: voiceB, // e.g. "/public/voices/voiceB.wav"
+      conversation: conversation, // your conversation array
+      imageA: imageA, // e.g. "/public/characters/charA.png"
+      imageB: imageB, // e.g. "/public/characters/charB.png"
+      video: video, // e.g. "/public/videos/video.mp4"
+    };
+
+    const response = await fetch("http://127.0.0.1:8000/process-conversation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    setLoading(false);
+    setShowVideo(true);
+    setVideo(data.video_path); // Set the video path from the response
+  };
+
   if (showVideo) {
     return (
       <div className="w-full flex flex-col items-center text-white px-4 py-4 pb-20 overflow-y-auto">
         <video
-          src={video}
+          src={videopath}
           className="w-full max-w-2xl max-h-[400px] rounded-lg"
           controls
         />
@@ -93,6 +156,7 @@ export default function EditingPanel({
         </div>
 
         {/* Buttons below conversation */}
+        {/* Buttons below conversation */}
         <div className={styles.buttonsSection}>
           <div className={styles.buttonRow}>
             <button
@@ -119,13 +183,20 @@ export default function EditingPanel({
             >
               Edit Character 2
             </button>
+            {/* New "View Video" button if videoPath is not empty */}
+            {videopath && videopath !== "" && (
+              <button
+                className={styles.button}
+                onClick={() => setShowVideo(true)}
+              >
+                View Video
+              </button>
+            )}
           </div>
           <button
             onClick={() => {
               setLoading(true);
-              // your processing logic here
-              // after processing:
-              // setLoading(false);
+              generateHandler();
             }}
             className={`${styles.button} ${styles.generateButton}`}
             disabled={!isReady || loading}

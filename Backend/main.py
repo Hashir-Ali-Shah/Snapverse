@@ -3,8 +3,22 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from storygenerator import StoryGenerator  
+from voicegenerator import ChatterboxVoiceCloner
+from videogenerator import VideoProcessor
+import torchaudio
+from fastapi.responses import JSONResponse
+import os
+import traceback
+from typing import List, Dict, Tuple
 
 app = FastAPI()
+
+def get_wav_duration(path: str) -> float:
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"Audio file not found: {path}")
+    waveform, sample_rate = torchaudio.load(path)
+    num_samples = waveform.size(1)
+    return num_samples / sample_rate
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,10 +35,79 @@ class AnswerResponse(BaseModel):
     answer: str
 
 generator = StoryGenerator()
+voice_cloner = ChatterboxVoiceCloner()
+
+
 @app.post("/generate", response_model=AnswerResponse)
 def generate_story(request: QuestionRequest):
+    try:
+        answer = generator.generate(request.question)
+        return {"answer": answer}
+    except Exception as e:
+        traceback.print_exc()
+        return JSONResponse(
+            {"error": str(e), "traceback": traceback.format_exc()},
+            status_code=500
+        )
 
-    answer = generator.generate(request.question)
-    return {"answer": answer}
+
+class Message(BaseModel):
+    id: int
+    speaker: str
+    text: str
+
+class VoiceImageRequest(BaseModel):
+    voiceA: str
+    voiceB: str
+    conversation: List[Message]
+    imageA: str
+    imageB: str
+    video:str
 
 
+@app.post("/process-conversation")
+def process_conversation(data: VoiceImageRequest):
+    voice_a_path = data.voiceA.lstrip('/')
+    voice_b_path = data.voiceB.lstrip('/')
+    image_a_path = data.imageA.lstrip('/')
+    image_b_path = data.imageB.lstrip('/')
+    videopath = data.video.lstrip('/')
+    conversation = data.conversation
+
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    PUBLIC_DIR = os.path.abspath(os.path.join(BASE_DIR, "../Frontend/public"))
+
+    subtitles: List[Tuple[str, float, float, str]] = []  # (text, start_sec, duration_sec, voice_path)
+
+    # For demo, use dummy start/duration. Replace with your logic for timing
+    current_start = 0.0
+   
+
+    for msg in conversation:
+  
+        voice_output_filename = f"voices/voice_{msg.id}.wav"
+        voice_output_path = os.path.join(PUBLIC_DIR, voice_output_filename)
+        if msg.speaker == "A":
+             audio_prompt_path=os.path.join(PUBLIC_DIR, voice_a_path)
+           
+        else:
+            audio_prompt_path = os.path.join(PUBLIC_DIR, voice_b_path)
+           
+        
+        voice_cloner.clone_and_generate(msg.text, audio_prompt_path, voice_output_path)
+        duration=get_wav_duration(voice_output_path)
+
+        subtitles.append((msg.text, current_start, duration, voice_output_path))
+
+        current_start +=duration 
+    videoPath=os.path.join(PUBLIC_DIR, videopath)
+    logo_left_path = os.path.join(PUBLIC_DIR, image_a_path)
+    logo_right_path = os.path.join(PUBLIC_DIR, image_b_path)
+    videoProcessor= VideoProcessor(
+        video_path=videoPath,logo_left_path=logo_left_path,
+        logo_right_path=logo_right_path, subtitles=subtitles)
+    videoProcessor.process(
+        output_path=os.path.join(PUBLIC_DIR, "output_video.mp4"),audio_duration=current_start)
+    
+    return {"message": "Conversation processed successfully", "video_path": "/output_video.mp4"}

@@ -17,7 +17,9 @@ export default function StoryPanel({
   setConversation,
 }: {
   onSelectPanel: (panel: string) => void;
-  setConversation: (value: []) => void;
+  setConversation: (
+    value: { id: number; speaker: string; text: string }[]
+  ) => void;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>([
     { role: "ai", content: "Hello! How can I help you today?" },
@@ -31,8 +33,21 @@ export default function StoryPanel({
     setCopy(true);
     setTimeout(() => setCopy(false), 2000);
   };
+  const conversationHandler = (content: string) => {
+    return content
+      .trim()
+      .split("\n") // split by line
+      .filter((line) => line.trim() !== "") // remove empty lines
+      .map((line, index) => ({
+        id: index + 1,
+        speaker: index % 2 === 0 ? "A" : "B",
+        text: line.trim(),
+      }));
+  };
 
   const storyHandler = () => {
+    if (messages.length < 2) return; // Ensure we have at least one user message and one AI response
+    setConversation(conversationHandler(messages[messages.length - 1].content));
     onSelectPanel("story");
     setInput("");
   };

@@ -15,13 +15,7 @@ export default function CharactersPanel({
   setChar1: (value: string) => void;
   setChar2: (value: string) => void;
 }) {
-  const [characters, setCharacters] = useState([
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-  ]);
+  const [characters, setCharacters] = useState(["/characters/logo.png"]);
   const charactersHandler = (value: string) => {
     if (char1 === "") {
       setChar1(value);

@@ -13,18 +13,8 @@ export default function VideoPanel({
   video: string;
 }) {
   const [videoURL, setVideoURL] = useState("");
-  const [videos, setVideos] = useState([
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-    "/testing.mp4",
-  ]);
+  const [videos, setVideos] = useState(["/videos/testing.mp4"]);
+
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     setVideoURL(e.target.value);
   }

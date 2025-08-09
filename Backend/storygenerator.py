@@ -23,20 +23,39 @@ class StoryGenerator:
     def _build_prompt(self):
 
         system_prompt = SystemMessagePromptTemplate.from_template(
-            "You are an expert AI assistant who explains AI/ML topics in simple terms for beginners. "
-            "you can look at the history of the conversation to understand the context. "
-            "use the fewshortprompts to understand how to answer any question  which starts below"
+            "You are story generator expert whose only task it to generate conversation between 2 characters based on user input .\n "
+            "you can look at the history of the conversation to understand the context.\n "
+            "use the fewshortprompts to understand how to answer any question  which starts below\n"
+            "your output should start directly from coversation and end on conversation and should not contain any other text.\n"
+            "if somebody asks a question other than conversation then you should answer with 'I am story generator expert and I can only generate conversation between 2 characters based on user input.'\n"
         )
 
         examples = [
             {
-                "input": "What is a neural network?",
-                "output": "A neural network is a machine learning model inspired by the brain. It learns patterns in data using layers of artificial neurons.",
+                "input": "generate a conversation between a teacher and a student about neural networks",
+                "output": """I’ve been reading about neural networks, but I’m still not sure how they actually learn.
+                They learn by adjusting weights between neurons based on the error between predicted and actual outputs.
+                So it’s just math behind the scenes?
+                Exactly—linear algebra for the calculations, and calculus for optimization.
+                And more layers mean better learning?
+                Not always—more layers can help, but too many can cause overfitting.
+                Oh, so we have to balance complexity and accuracy.
+                Right, and that’s why we use techniques like regularization and dropout.
+                Makes sense. I guess the “magic” is just well-tuned math.
+                Exactly—magic until you understand the math.""",
             },
             {
-                "input": "What is a vector database?",
-                "output": "A vector database stores information as vectors (arrays of numbers). It helps find similar items—like matching text or images.\n"
-                 "Few short prompts end \n ",
+                "input": "give me a conversation between a doctor and a patient about vector databases",
+                "output": """How have you been feeling lately?
+                            Pretty good, doctor, but I’ve been hearing about something called vector databases—what are they?
+                            They’re databases designed to store and search high-dimensional vectors, often used for AI and machine learning.
+                            So instead of rows and columns, they store… vectors?
+                            Exactly—think of each vector as a numerical fingerprint for text, images, or audio.
+                            And the database can find similar ones quickly?
+                            Yes, using similarity search methods like cosine similarity or Euclidean distance.
+                            That sounds like it could help in medical research.
+                            It does—imagine instantly finding patient cases similar to yours.
+                            Wow, so it’s like a memory for AI. """,
             },
         ]
 

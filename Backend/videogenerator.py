@@ -1,4 +1,4 @@
-from moviepy import VideoFileClip, ImageClip, CompositeVideoClip, TextClip, AudioFileClip, CompositeAudioClip
+from moviepy import VideoFileClip, ImageClip, CompositeVideoClip, TextClip, AudioFileClip, CompositeAudioClip,concatenate_videoclips
 import os
 from PIL import Image
 import numpy as np
@@ -40,9 +40,27 @@ class VideoProcessor:
             audio = AudioFileClip(audio_path).with_start(start_time).with_volume_scaled(5)
             audio_clips.append(audio)
         return CompositeAudioClip(audio_clips).with_duration(total_duration)
-
-    def process(self, output_path: str):
+    
+    def loop_video(self, duration: float) -> VideoFileClip:
         video = VideoFileClip(self.video_path)
+        clips = []
+        total = 0
+        while total < duration:
+            remaining = duration - total
+            if remaining < video.duration:
+                clips.append(video.subclipped(0, remaining))
+                total += remaining
+            else:
+                clips.append(video)
+                total += video.duration
+        return concatenate_videoclips(clips)
+
+    def process(self, output_path,audio_duration: float):
+        video = VideoFileClip(self.video_path)
+        if video.duration < audio_duration:
+            video = self.loop_video(duration=audio_duration+1)
+        elif video.duration > audio_duration:
+            video = video.subclipped(0, audio_duration+1)
 
 
         logo_clip_left = (
@@ -52,7 +70,6 @@ class VideoProcessor:
             .with_position((100, 400))
         )
 
-    
         img = Image.open(self.logo_right_path)
         flipped_img = np.array(img.transpose(Image.FLIP_LEFT_RIGHT))
         logo_clip_right = (
@@ -63,16 +80,19 @@ class VideoProcessor:
         x_right = video.w - logo_clip_right.w - 100
         logo_clip_right = logo_clip_right.with_position((x_right, 400))
 
-    
         text_clips = self.create_text_clips()
         audio_composite = self.create_audio_clips(video.duration)
 
-    
         clips = [video, logo_clip_left, logo_clip_right] + text_clips
         final = CompositeVideoClip(clips).with_audio(audio_composite)
 
-   
         final.write_videofile(output_path, codec="libx264", audio_codec="aac")
+
+
+    
+
+
+
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -89,6 +109,7 @@ subtitles = [
 ]
 
 output_path = os.path.join(BASE_DIR, "testing_output.mp4")
+input_video_path = os.path.join(PUBLIC_DIR, "testing.mp4")
 
 processor = VideoProcessor(
     video_path=video_path,
@@ -96,4 +117,5 @@ processor = VideoProcessor(
     logo_right_path=logo_right_path,
     subtitles=subtitles
 )
-processor.process(output_path=output_path)
+
+

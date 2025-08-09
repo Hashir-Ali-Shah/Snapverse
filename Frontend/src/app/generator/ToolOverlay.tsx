@@ -17,7 +17,9 @@ export default function ToolOverlay({
   const [imageA, setImageA] = useState("");
   const [imageB, setImageB] = useState("");
   const [video, setVideo] = useState("");
-  const [conversation, setConversation] = useState([]);
+  const [conversation, setConversation] = useState<
+    { id: number; speaker: string; text: string }[]
+  >([]);
 
   return (
     <div className="relative top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10 ">
