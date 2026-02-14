@@ -5,8 +5,10 @@ from pydantic import BaseModel
 from storygenerator import StoryGenerator  
 from voicegenerator import ChatterboxVoiceCloner
 from videogenerator import VideoProcessor
+from captionGenerator import CaptionGenerator
 import torchaudio
 from fastapi.responses import JSONResponse
+
 import os
 import traceback
 from typing import List, Dict, Tuple
@@ -36,6 +38,7 @@ class AnswerResponse(BaseModel):
 
 generator = StoryGenerator()
 voice_cloner = ChatterboxVoiceCloner()
+caption_generator = CaptionGenerator()
 
 
 @app.post("/generate", response_model=AnswerResponse)
@@ -67,6 +70,8 @@ class VoiceImageRequest(BaseModel):
 
 @app.post("/process-conversation")
 def process_conversation(data: VoiceImageRequest):
+    import uuid
+
     voice_a_path = data.voiceA.lstrip('/')
     voice_b_path = data.voiceB.lstrip('/')
     image_a_path = data.imageA.lstrip('/')
@@ -74,40 +79,51 @@ def process_conversation(data: VoiceImageRequest):
     videopath = data.video.lstrip('/')
     conversation = data.conversation
 
-
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     PUBLIC_DIR = os.path.abspath(os.path.join(BASE_DIR, "../Frontend/public"))
 
-    subtitles: List[Tuple[str, float, float, str]] = []  # (text, start_sec, duration_sec, voice_path)
+    # Concatenate all text values
+    full_text = " ".join([msg.text for msg in conversation])
+    
+    # Generate a unique ID
+    conversation_id = str(uuid.uuid4())
+    
+    # Generate caption
+    caption = caption_generator.generate_caption(full_text, conversation_id)
+    
+    # Set output path for the final video
+    output_dir = os.path.join(PUBLIC_DIR, "clips")
+    os.makedirs(output_dir, exist_ok=True)
+    output_video_path = os.path.join(output_dir, f"{caption}.mp4")
 
-    # For demo, use dummy start/duration. Replace with your logic for timing
+    subtitles: List[Tuple[str, float, float, str]] = []  # (text, start_sec, duration_sec, voice_path)
     current_start = 0.0
-   
 
     for msg in conversation:
-  
-        voice_output_filename = f"voices/voice_{msg.id}.wav"
-        voice_output_path = os.path.join(PUBLIC_DIR, voice_output_filename)
-        if msg.speaker == "A":
-             audio_prompt_path=os.path.join(PUBLIC_DIR, voice_a_path)
-           
-        else:
-            audio_prompt_path = os.path.join(PUBLIC_DIR, voice_b_path)
-           
-        
+        voice_output_filename = f"voice_{msg.id}.wav"
+        voice_output_path = os.path.join(output_dir, voice_output_filename)
+
+        audio_prompt_path = os.path.join(PUBLIC_DIR, voice_a_path) if msg.speaker == "A" else os.path.join(PUBLIC_DIR, voice_b_path)
+
         voice_cloner.clone_and_generate(msg.text, audio_prompt_path, voice_output_path)
-        duration=get_wav_duration(voice_output_path)
+        duration = get_wav_duration(voice_output_path)
 
         subtitles.append((msg.text, current_start, duration, voice_output_path))
+        current_start += duration
 
-        current_start +=duration 
-    videoPath=os.path.join(PUBLIC_DIR, videopath)
+    videoPath = os.path.join(PUBLIC_DIR, videopath)
     logo_left_path = os.path.join(PUBLIC_DIR, image_a_path)
     logo_right_path = os.path.join(PUBLIC_DIR, image_b_path)
-    videoProcessor= VideoProcessor(
-        video_path=videoPath,logo_left_path=logo_left_path,
-        logo_right_path=logo_right_path, subtitles=subtitles)
-    videoProcessor.process(
-        output_path=os.path.join(PUBLIC_DIR, "output_video.mp4"),audio_duration=current_start)
+
+    videoProcessor = VideoProcessor(
+        video_path=videoPath,
+        logo_left_path=logo_left_path,
+        logo_right_path=logo_right_path,
+        subtitles=subtitles
+    )
     
-    return {"message": "Conversation processed successfully", "video_path": "/output_video.mp4"}
+    videoProcessor.process(output_path=output_video_path, audio_duration=current_start)
+
+    # Return the relative path for front-end access
+    relative_output_path = os.path.join("/clips", f"{caption}.mp4")
+    return {"message": "Conversation processed successfully", "video_path": relative_output_path}

@@ -1,3 +1,4 @@
+import os
 from langchain_groq import ChatGroq
 from langchain_core.prompts import (
     ChatPromptTemplate,
@@ -14,7 +15,7 @@ class StoryGenerator:
         self.llm = ChatGroq(
             model="llama3-70b-8192",
             temperature=temperature,
-            api_key="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",
+            api_key=os.getenv("GROQ_API_KEY"),
             streaming=True,
         )
         self.chat_prompt = self._build_prompt()

@@ -128,5 +128,5 @@ class YoutubeDownloader:
 path=r"D:\ML\Flagship\Code\Frontend\public\videos"
 
 downlaod=YoutubeDownloader()
-downlaod.download_and_subclip("https://youtu.be/XBIaqOm0RKQ?si=M5mzFu3qO2ibs60v", resolution="360", filename="subway_surf", output_path=path,subclipping=True)
+downlaod.download_and_subclip("https://youtube.com/shorts/lGw3aydyBvw?si=IS-ATlfrYHgH5H2p", resolution="360", filename="subway_surf", output_path=path,subclipping=True)
         

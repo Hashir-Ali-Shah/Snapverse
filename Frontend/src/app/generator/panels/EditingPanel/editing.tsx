@@ -19,7 +19,7 @@ export default function EditingPanel({
 }) {
   const [showVideo, setShowVideo] = useState(true);
   const [loading, setLoading] = useState(false); // <-- loading state
-  const [videopath, setVideo] = useState("/output_video.mp4");
+  const [videopath, setVideo] = useState("");
 
   const isReady =
     imageA.trim() !== "" &&
@@ -89,7 +89,7 @@ export default function EditingPanel({
     setVideo(data.video_path); // Set the video path from the response
   };
 
-  if (showVideo) {
+  if (showVideo && videopath) {
     return (
       <div className="w-full flex flex-col items-center text-white px-4 py-4 pb-20 overflow-y-auto">
         <video
